@@ -63,7 +63,6 @@
               <el-menu-item index="1-1">收支查询</el-menu-item>
               <el-menu-item index="1-2">财务报表</el-menu-item>
               <el-menu-item index="1-3">证券流水</el-menu-item>
-              <el-menu-item index="1-4">股票流水</el-menu-item>
             </el-submenu>
             <el-submenu index="2">
               <template slot="title">

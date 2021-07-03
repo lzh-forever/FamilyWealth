@@ -6,8 +6,17 @@ import Register from '../components/Register.vue'
 import Reset_password from '../components/Password.vue'
 import Verify from '../components/Verify.vue'
 
-import Welcome from '../components/Welcome.vue'
 import Home from '../components/Home.vue'
+import Welcome from '../components/Welcome.vue'
+//收支详情子菜单
+import InAndEx from '../components/search/InAndEx.vue'
+import FinancialList from '../components/search/FinancialList.vue'
+import Shares from '../components/search/Shares.vue'
+//财务管理子菜单
+import SecurityAccount from '../components/manage/SecurityAccount.vue'
+import SharesManage from '../components/manage/SharesManage.vue'
+//股票预测
+import SharesForecast from '../components/forecast/SharesForecast.vue'
 
 Vue.use(VueRouter)
 
@@ -22,7 +31,13 @@ const routes = [
     component: Home,
     redirect: '/welcome',
     children: [
-      { path: '/welcome', component: Welcome }
+      { path: '/welcome', component: Welcome },
+      { path: '/1-1', component: InAndEx },
+      { path: '/1-2', component: FinancialList },
+      { path: '/1-3', component: Shares },
+      { path: '/2-1', component: SecurityAccount },
+      { path: '/2-2', component: SharesManage },
+      { path: '/3', component: SharesForecast }
       // { path: '/changeabletitle', component: ChangeableTitle }
     ]
   }
