@@ -58,45 +58,50 @@ export default {
   data() {
     return {
       form: {
-        username: "admin",
+        username: "xiaoai",
         password: "123456",
       },
-      token:'',
-      isAdmin: '',
       rules: {
         username: [
           { required: true, message: "请输入账号", trigger: "blur" },
-          { max: 50, message: "长度小于50位", trigger: "blur" },
+          { max: 50, message: "长度需小于50位", trigger: "blur" },
         ],
         password: [
           { required: true, message: "请输入密码", trigger: "blur" },
-          { max: 50, message: "长度小于50位", trigger: "blur" },
+          { max: 50, message: "长度需小于50位", trigger: "blur" },
         ],
       },
     };
   },
   methods: {
     login() {
-      var that = this
+      var that = this;
       this.$refs.formRef.validate((valid) => {
         if (valid) {
-          this.$http.post('/api/user/login',this.form).then(
-            function(response){
-              var data=response.data
-              if(data.code!=0){
-                alert(data.msg)
-              } else{
-                that.token=data.data.token
-                that.isAdmin=data.data.isAdmin
+          this.$http
+            .post("/api/user/login", this.form)
+            .then(function (response) {
+              var data = response.data;
+              if (data.code != 0) {
+                that.$message.error(data.msg);
+              } else {
+                var token = data.data.token;
+                var isAdmin = data.data.isAdmin;
+                that.$message.success("success");
+                window.sessionStorage.setItem("token", token);
+                if (isAdmin) {
+                  that.$router.push("/home");
+                } else {
+                  that.$router.push('/home')
+                }
               }
-            }
-          )
+            });
         }
       });
     },
-    test(){
-      this.$router.push('/home')
-    }
+    test() {
+      this.$router.push("/home");
+    },
   },
 };
 </script>
