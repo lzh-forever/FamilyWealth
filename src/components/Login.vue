@@ -46,7 +46,7 @@
           </el-row>
         </el-form-item>
         <el-form-item class="btns">
-          <el-button type="primary" @click="test">登录</el-button>
+          <el-button type="primary" @click="login">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
