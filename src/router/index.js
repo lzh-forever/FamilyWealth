@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
+//登录页
 import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
 import Reset_password from '../components/Password.vue'
 import Verify from '../components/Verify.vue'
-
+//管理员主页
+import Admin from '../components/Admin.vue'
+//用户主页和欢迎页
 import Home from '../components/Home.vue'
 import Welcome from '../components/Welcome.vue'
 //收支详情子菜单
@@ -26,6 +28,7 @@ const routes = [
   { path:'/register', component: Register },
   { path:'/reset_password', component: Reset_password},
   { path:'/verify', component: Verify},
+  { path:'/admin', component: Admin},
   {
     path: '/home',
     component: Home,
