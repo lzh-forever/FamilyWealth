@@ -13,6 +13,7 @@
 
 <script>
 import * as echarts from "echarts";
+import { splitData,setData0,getOption } from "./forecast";
 export default {
   data() {
     return {
@@ -20,8 +21,6 @@ export default {
     };
   },
   mounted() {
-
-
     // const option = {
     //   toolbox: { feature: { saveAsImage: {} } },
     //   tooltip: {},
@@ -66,20 +65,26 @@ export default {
     },
     getResult() {
       var that = this;
-      this.$http.get("http://192.168.43.54:5000/forecast?code="+this.input+"&date=2021-04-01").then(function (response) {
-        var data = response.data;
-        console.log(response)
-        if (data.code != 0) {
-          that.$message.error(data.msg + '请输入6位股票代码');
-        } else {
-          var myChart = echarts.init(document.getElementById("main"));
-          data.option.yAxis.scale=true
-          myChart.setOption(data.option);
-        }
-      },function(err){
-        console.log(err)
-        console.log('aaaa')
-      });
+      this.$http
+        .get("http://192.168.43.54:5000/forecast?code=" + this.input)
+        .then(
+          function (response) {
+            console.log(response.data);
+            if (response.data.code != 0) {
+              that.$message.error(response.data.msg + "请输入6位股票代码");
+            } else {
+              var myChart = echarts.init(document.getElementById("main"));
+              var rawData = response.data.data
+              setData0(splitData(rawData))
+              var option = getOption()
+              myChart.setOption(option);
+            }
+          },
+          function (err) {
+            console.log(err);
+            console.log("aaaa");
+          }
+        );
     },
   },
 };
