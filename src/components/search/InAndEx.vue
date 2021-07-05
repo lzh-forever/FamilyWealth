@@ -89,17 +89,26 @@
     </el-card>
 
     <!-- 添加的对话框 -->
-    <el-dialog title="提示" :visible.sync="addDialogVisible" width="50%">
+    <el-dialog title="提示" :visible.sync="addDialogVisible" width="20%">
       <!-- 内容主体 -->
       <el-form
         :model="addForm"
         :rules="addFormRules"
         ref="addFormRef"
-        label-width="70px"
+        label-width="120px"
+        label-position="left"
       >
-        <!-- <el-form-item label="收支金额" prop="num">
-          <el-input v-model="ruleForm.name"></el-input>
-        </el-form-item> -->
+        <el-form-item label="收支金额" prop="num">
+          <el-input v-model="addForm.num"></el-input>
+        </el-form-item>
+        <el-form-item label="收支类型" prop="type">
+          <el-cascader
+            v-model="addForm.type"
+            :options="options"
+            :props="{ expandTrigger: 'hover' }"
+            @change="handleChange"
+          ></el-cascader>
+        </el-form-item>
       </el-form>
       <!-- 底部区域 -->
       <span slot="footer" class="dialog-footer">
@@ -124,9 +133,67 @@ export default {
       select: "",
       tableData: [],
       //添加记录的数据
-      addForm: {},
+      options: [
+        {
+          value: "in",
+          label: "收入",
+          children: [
+            {
+              value: "工资",
+              label: "工资",
+            },
+            {
+              value: "股票",
+              label: "股票",
+            },
+            {
+              value: "分红",
+              label: "分红",
+            },
+            {
+              value: "奖金",
+              label: "奖金",
+            },
+          ],
+        },
+        {
+          value: "ex",
+          label: "支出",
+          children: [
+            {
+              value: "税收",
+              label: "税收",
+            },
+            {
+              value: "衣食住行",
+              label: "衣食住行",
+            },
+            {
+              value: "医疗",
+              label: "医疗",
+            },
+            {
+              value: "其他",
+              label: "其他",
+            },
+          ],
+        },
+      ],
+      addForm: {
+        type: [],
+        InAndExNum: "",
+        Intype: "",
+        num: "",
+        data: "",
+      },
       // 添加表单的验证规则
-      addFormRules:{},
+      addFormRules: {
+        num: [
+          { required: true, message: "请输入内容", trigger: "blur" },
+          { min: 0, max: 10, message: "0到10位", trigger: "blur" },
+        ],
+        type: [{ required: true }],
+      },
       token: window.sessionStorage.getItem("token"),
       testForm: {
         token: window.sessionStorage.getItem("token"),
