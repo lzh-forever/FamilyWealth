@@ -5,6 +5,8 @@ import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
 import Reset_password from '../components/Password.vue'
 import Verify from '../components/Verify.vue'
+//管理员操作界面
+import usermanage from '../components/admin-usermanage/usermanage.vue'
 //管理员主页
 import Admin from '../components/Admin.vue'
 //用户主页和欢迎页
@@ -20,6 +22,7 @@ import SharesManage from '../components/manage/SharesManage.vue'
 //股票预测
 import SharesForecast from '../components/forecast/SharesForecast.vue'
 
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -28,7 +31,6 @@ const routes = [
   { path:'/register', component: Register },
   { path:'/reset_password', component: Reset_password},
   { path:'/verify', component: Verify},
-  { path:'/admin', component: Admin},
   {
     path: '/home',
     component: Home,
@@ -42,6 +44,15 @@ const routes = [
       { path: '/2-2', component: SharesManage },
       { path: '/3', component: SharesForecast }
       // { path: '/changeabletitle', component: ChangeableTitle }
+    ]
+  },
+  {
+    path: '/admin',
+    component: Admin,
+
+    children: [
+      { path: '/a1', component: usermanage }
+
     ]
   }
 ]
