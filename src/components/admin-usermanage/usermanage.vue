@@ -15,11 +15,17 @@
           ></el-button>
         </el-input>
       </el-col>
-      <el-col :span="4">
-        <el-button type="primary" @click="centerDialogVisible = true"
+      <el-col :span="2.5">
+        <el-button type="primary" @click="getUserList"
+          >查询所有用户信息</el-button
+        >
+      </el-col>
+      <el-col :span="2">
+        <el-button type="primary" @click="centerDialogVisible = true" 
           >添加用户</el-button
         >
       </el-col>
+        
     </el-row>
     <!--添加用户的对话框-->
     <el-dialog
@@ -27,24 +33,23 @@
       :visible.sync="centerDialogVisible"
       width="30%"
       center
+      v-if="centerDialogVisible"
     >
-      <span>
-        <el-form ref="form" :model="form" label-width="80px">
-          <el-form-item label="账号:">
-            <el-input v-model="addUserInfo.username"></el-input>
+        <el-form ref="form" :model="addUserInfo" label-width="80px" :rules="rules">
+          <el-form-item label="账号:" prop="username">
+            <el-input v-model="addUserInfo.username" placeholder="请填写账号"></el-input>
           </el-form-item>
-          <el-form-item label="密码:">
-            <el-input v-model="addUserInfo.password"></el-input>
+          <el-form-item label="密码:" prop="password">
+            <el-input v-model="addUserInfo.password" placeholder="请填写密码"></el-input>
           </el-form-item>
-          <el-form-item label="用户名:">
-            <el-input v-model="addUserInfo.name"></el-input>
+          <el-form-item label="用户名:" prop="name">
+            <el-input v-model="addUserInfo.name" placeholder="请填写用户名"></el-input>
           </el-form-item>
           
         </el-form>
-      </span>
       <!--底部按钮-->
       <span slot="footer" class="dialog-footer">
-        <el-button @click="centerDialogVisible = false">取 消</el-button>
+        <el-button @click="centerDialogVisible = false;">取 消</el-button>
         <el-button
           type="primary"
           @click="
@@ -61,7 +66,6 @@
         class="info"
         type="index"
         label="序号"
-        :index="indexMethod"
         width="65px"
       ></el-table-column>
       <el-table-column
@@ -127,6 +131,20 @@ export default {
         username: "",
         name: "",
         password: "",
+      },
+      rules: {
+        username: [
+          { required: true, message: "请输入账号", trigger: "blur" },
+          { max: 50, message: "长度需小于50位", trigger: "blur" },
+        ],
+        password: [
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { max: 50, message: "长度需小于50位", trigger: "blur" },
+        ],
+        name: [
+          { required: true, message: "请输入用户名", trigger: "blur" },
+          { max: 19, message: "长度需小于20位", trigger: "blur" },
+        ],
       },
     };
   },
