@@ -90,7 +90,7 @@ export default {
                 that.$message.success("success");
                 window.sessionStorage.setItem("token", token);
                 if (isAdmin) {
-                  that.$router.push("/home");
+                  that.$router.push("/admin");
                 } else {
                   that.$router.push('/home')
                 }

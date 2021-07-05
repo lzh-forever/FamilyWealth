@@ -108,7 +108,7 @@ export default {
                       that.$message.success("login success");
                       window.sessionStorage.setItem("token", token);
                       if (isAdmin) {
-                        that.$router.replace("/home");
+                        that.$router.replace("/admin");
                       } else {
                         that.$router.replace("/home");
                       }
