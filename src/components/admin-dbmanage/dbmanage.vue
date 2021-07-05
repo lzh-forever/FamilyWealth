@@ -19,7 +19,7 @@
         >
       </el-col>
       <el-col :span="2.5">
-        <el-button type="primary" @click="CcenterDialogVisible = true"
+        <el-button type="primary" @click="CcenterDialogVisible = true;InitC()"
           >清空数据库</el-button
         >
       </el-col>
@@ -101,6 +101,7 @@
       
     </el-dialog>
     <el-table
+      stripe
       :data="dbList"
       highlight-current-row="true"
       width="665px"
@@ -113,11 +114,11 @@
       <el-table-column class="info" label="操作" align="center">
         <template slot-scope="scope">
           <el-tooltip effect="dark" content="删除" placement="top" :enterable="false">
-            <el-button type="danger" icon="el-icon-delete" @click="centerDialogVisible = true;dbDeleteName = scope.row.name">
+            <el-button type="danger" icon="el-icon-delete" @click="centerDialogVisible = true;dbDeleteName = scope.row.name;Init()">
             </el-button>
           </el-tooltip>
           <el-tooltip effect="dark" content="恢复" placement="top" :enterable="false">
-            <el-button type="success" icon="el-icon-check" @click="BcenterDialogVisible = true;dbSetbackName = scope.row.name">
+            <el-button type="success" icon="el-icon-check" @click="BcenterDialogVisible = true;dbSetbackName = scope.row.name;InitB()">
             </el-button>
           </el-tooltip>
         </template>
@@ -239,6 +240,15 @@ export default {
         that.$message.success(data.msg);
       }
       this.getdbList();
+    },
+    Init(){
+      this.adminPassword = '';
+    },
+    InitB(){
+      this.BadminPassword = '';
+    },
+    InitC(){
+      this.CadminPassword = '';
     }
   },
 };

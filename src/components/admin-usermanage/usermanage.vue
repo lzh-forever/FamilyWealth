@@ -21,7 +21,7 @@
         >
       </el-col>
       <el-col :span="2">
-        <el-button type="primary" @click="centerDialogVisible = true" 
+        <el-button type="primary" @click="centerDialogVisible = true;Init(addUserInfo);" 
           >添加用户</el-button
         >
       </el-col>
@@ -61,7 +61,7 @@
       </span>
     </el-dialog>
 
-    <el-table :data="userList" highlight-current-row="true" width="665px" height="760" style="margin-top:15px">
+    <el-table stripe :data="userList" highlight-current-row="true" width="665px" height="760" style="margin-top:15px">
       <el-table-column
         class="info"
         type="index"
@@ -218,6 +218,11 @@ export default {
         this.getUserList();
       }
     },
+    Init(addUserInfo){
+        addUserInfo.username = '';
+        addUserInfo.password = '';
+        addUserInfo.name = '';
+    }
   },
 };
 </script>
