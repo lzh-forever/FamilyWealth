@@ -25,7 +25,7 @@
             prefix-icon="el-icon-lock"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="password">
+        <el-form-item prop="confirmPassword">
           <el-input
             v-model="form.confirmPassword"
             placeholder="请再次输入密码"
@@ -55,7 +55,11 @@ export default {
           { required: true, message: "请输入账号", trigger: "blur" },
           { max: 50, message: "长度需小于50位", trigger: "blur" },
         ],
-        password: [
+        password : [
+          { required: true, message: "请输入重置密码", trigger: "blur" },
+          { max: 50, message: "长度需小于50位", trigger: "blur" },
+        ],
+        confirmPassword:[
           { required: true, message: "请输入重置密码", trigger: "blur" },
           { max: 50, message: "长度需小于50位", trigger: "blur" },
         ],
