@@ -8,6 +8,7 @@
       </el-breadcrumb>
     </el-card>
     <br />
+    <!-- 两个图表 -->
     <el-row :gutter="24">
       <el-col :span="16">
         <div class="grid-content bg-purple">
@@ -24,7 +25,9 @@
         </div>
       </el-col>
     </el-row>
+    <!-- 收支查询表 -->
     <el-card shadow="always">
+      <!-- 查询输入栏 -->
       <div style="margin-top: 0px">
         <el-input
           placeholder="请输入内容"
@@ -35,27 +38,77 @@
             <el-option label="收入" value="1"></el-option>
             <el-option label="支出" value="2"></el-option>
           </el-select>
-          <el-date-picker
+          <!-- <el-date-picker
             v-model="value2"
             align="right"
             type="date"
             placeholder="选择日期"
             :picker-options="pickerOptions"
           >
-          </el-date-picker>
-          <el-button slot="append" icon="el-icon-search"></el-button>
+          </el-date-picker> -->
+          <el-button
+            slot="append"
+            icon="el-icon-search"
+            @click="addUser"
+          ></el-button>
         </el-input>
       </div>
-      <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="date" label="日期" width="180">
+      <el-table :data="tableData" height="350" border style="width: 100%">
+        <el-table-column type="index" label="#"></el-table-column>
+        <el-table-column prop="time" label="日期" width="250">
         </el-table-column>
-        <el-table-column prop="name" label="收/支" width="180">
+        <el-table-column prop="receipt" label="收入金额" width="180">
         </el-table-column>
-        <el-table-column prop="address" label="收支类型" width="180">
+        <el-table-column prop="disbursement" label="支出金额" width="180">
+        </el-table-column>
+        <el-table-column prop="type" label="收支类型" width="180">
         </el-table-column>
         <el-table-column prop="note" label="备注"> </el-table-column>
+        <el-table-column label="操作" width="180">
+          <template slot-scope="scope">
+            <el-button
+              type="primary"
+              icon="el-icon-edit"
+              size="mini"
+              @click="addDialogVisible = true"
+            ></el-button>
+            <el-button
+              type="danger"
+              icon="el-icon-delete"
+              size="mini"
+              @click="removeById(scope.row.id)"
+            ></el-button>
+            <el-button
+              type="warning"
+              icon="el-icon-setting"
+              size="mini"
+            ></el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </el-card>
+
+    <!-- 添加的对话框 -->
+    <el-dialog title="提示" :visible.sync="addDialogVisible" width="50%">
+      <!-- 内容主体 -->
+      <el-form
+        :model="addForm"
+        :rules="addFormRules"
+        ref="addFormRef"
+        label-width="70px"
+      >
+        <!-- <el-form-item label="收支金额" prop="num">
+          <el-input v-model="ruleForm.name"></el-input>
+        </el-form-item> -->
+      </el-form>
+      <!-- 底部区域 -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addDialogVisible = false"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -65,9 +118,102 @@ import * as echarts from "echarts";
 export default {
   data: function () {
     return {
+      // 控制添加对话框的显示和隐藏
+      addDialogVisible: false,
       input: "",
       select: "",
+      tableData: [],
+      //添加记录的数据
+      addForm: {},
+      // 添加表单的验证规则
+      addFormRules:{},
+      token: window.sessionStorage.getItem("token"),
+      testForm: {
+        token: window.sessionStorage.getItem("token"),
+        receipt: 20,
+        disbursement: 0,
+        type: "学习",
+        note: "test_addUser",
+      },
     };
+  },
+
+  methods: {
+    async addUser() {
+      const { response } = await this.$http.post(
+        "/api/bill/add",
+        this.testForm
+      );
+      this.getAll();
+    },
+
+    // async getAll() {
+    //   const { data } = await this.$http.post("/api/bill/get_all", {
+    //     token: window.sessionStorage.getItem("token"),
+    //   });
+    //   if (data.code !== 0) {
+    //     console.log("获取失败");
+    //     return this.$message.error("获取用户列表失败");
+    //   } else {
+    //     console.log("获取成功");
+    //     this.tableData = data.data.records;
+    //   }
+    // },
+
+    async getAll() {
+      const { data: response } = await this.$http.post("/api/bill/get_all", {
+        token: this.token,
+      });
+      if (response.code == 0) {
+        this.tableData = response.data.records;
+        this.$message({
+          message: "获取收支记录成功",
+          type: "success",
+        });
+      } else {
+        this.$message.error("ERROR");
+      }
+    },
+
+    // 删除弹窗
+    async removeById(removeid) {
+      console.log(removeid);
+
+      const confirmResult = await this.$confirm(
+        "此操作将永久删除该记录, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      ).catch((err) => err);
+
+      if (confirmResult !== "confirm") {
+        return this.$message({
+          type: "info",
+          message: "已取消删除",
+        });
+      }
+
+      const { data: res } = await this.$http.delete("/api/bill/delete", {
+        data: {
+          token: this.token,
+          id: removeid,
+        },
+      });
+      if (res.code == 0) {
+        this.$message({
+          type: "success",
+          message: "删除成功!",
+        });
+        this.getAll();
+      }
+    },
+  },
+
+  created() {
+    this.getAll();
   },
 
   mounted() {
