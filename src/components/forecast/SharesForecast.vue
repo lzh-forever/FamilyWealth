@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card>
+    <el-card id="stockForecast">
       <el-input
         placeholder="请输出股票代码"
         v-model="input"
@@ -13,7 +13,9 @@
 
 <script>
 import * as echarts from "echarts";
-import { splitData,setData0,getOption } from "./forecast";
+import { splitData, setData0, getOption } from "./forecast";
+import { Loading } from "element-ui";
+var loadingInstance;
 export default {
   data() {
     return {
@@ -58,6 +60,11 @@ export default {
         if (isNaN(Number(this.input))) {
           this.$message.error("请输入6位股票代码");
         } else {
+          loadingInstance = Loading.service({
+            text: "拼命加载中",
+            spinner: "el-icon-loading",
+            background: "rgba(0,0,0,0.8)",
+          });
           this.$message.success(this.input + " success");
           this.getResult();
         }
@@ -72,17 +79,20 @@ export default {
             console.log(response.data);
             if (response.data.code != 0) {
               that.$message.error(response.data.msg + "请输入6位股票代码");
+              loadingInstance.close();
             } else {
               var myChart = echarts.init(document.getElementById("main"));
-              var rawData = response.data.data
-              setData0(splitData(rawData))
-              var option = getOption()
+              var rawData = response.data.data;
+              setData0(splitData(rawData));
+              var option = getOption();
               myChart.setOption(option);
+              loadingInstance.close();
             }
           },
           function (err) {
             console.log(err);
             console.log("aaaa");
+            loadingInstance.close();
           }
         );
     },

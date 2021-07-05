@@ -1,6 +1,5 @@
 <template>
   <div class="login_container">
-    <el-button @click="test"></el-button>
     <div class="login_box">
       <el-form
         label-width="100px"
@@ -12,13 +11,18 @@
         <h2>注册</h2>
         <el-divider></el-divider>
         <el-form-item label="用户名" prop="name">
-          <el-input placeholder="请填写用户名" v-model="form.name"></el-input>
+          <el-input
+            placeholder="请填写用户名"
+            v-model="form.name"
+            @keyup.enter.native="register"
+          ></el-input>
         </el-form-item>
         <el-form-item label="账号" prop="username">
           <el-input
             placeholder="请填写账号"
             v-model="form.username"
             prefix-icon="el-icon-user"
+            @keyup.enter.native="register"
           ></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
@@ -27,6 +31,7 @@
             v-model="form.password"
             type="password"
             prefix-icon="el-icon-lock"
+            @keyup.enter.native="register"
           ></el-input>
         </el-form-item>
         <el-form-item label="邀请人账号" prop="inviteUsername">
@@ -34,6 +39,7 @@
             placeholder="请填写邀请人账号"
             v-model="form.inviteUsername"
             prefix-icon="el-icon-user"
+            @keyup.enter.native="register"
           ></el-input>
         </el-form-item>
         <el-form-item label="邀请人密码" prop="invitePassword">
@@ -42,6 +48,7 @@
             v-model="form.invitePassword"
             type="password"
             prefix-icon="el-icon-lock"
+            @keyup.enter.native="register"
           ></el-input>
         </el-form-item>
 
@@ -77,7 +84,7 @@ export default {
           { required: true, message: "请输入用户名", trigger: "blur" },
           { max: 19, message: "长度需小于20位", trigger: "blur" },
         ],
-        invitePassword : [
+        invitePassword: [
           { required: true, message: "请输入邀请人密码", trigger: "blur" },
           { max: 50, message: "长度需小于50位", trigger: "blur" },
         ],

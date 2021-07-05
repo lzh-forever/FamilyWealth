@@ -7,6 +7,7 @@ import Reset_password from '../components/Password.vue'
 import Verify from '../components/Verify.vue'
 //管理员操作界面
 import usermanage from '../components/admin-usermanage/usermanage.vue'
+import dbmanage from '../components/admin-dbmanage/dbmanage.vue'
 //管理员主页
 import Admin from '../components/Admin.vue'
 //用户主页和欢迎页
@@ -48,10 +49,11 @@ const routes = [
   },
   {
     path: '/admin',
+    redirect: '/a1',
     component: Admin,
-
     children: [
-      { path: '/a1', component: usermanage }
+      { path: '/a1', component: usermanage },
+      { path: '/a2', component: dbmanage }
 
     ]
   }
