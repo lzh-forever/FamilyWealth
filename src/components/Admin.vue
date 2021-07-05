@@ -17,7 +17,6 @@ export default {
         </div>
         <!--顶部菜单-->
         <el-menu
-          :default-active="activeIndex2"
           class="el-menu-demo"
           mode="horizontal"
           @select="handleSelect"
@@ -56,6 +55,7 @@ export default {
           <div class="toggle-button" v-on:click="toggleCollapse">|||</div>
           <!-- 侧边栏菜单 -->
           <el-menu
+            id="asideMenu"
             background-color="rgb(5, 107, 110)"
             text-color="#fff"
             active-text-color="black"
@@ -65,26 +65,18 @@ export default {
             router="ture"
           >
             <!--侧边栏菜单-->
-            <el-submenu index="a1">
+            <el-menu-item index="a1">
               <template slot="title">
                 <i class="el-icon-s-marketing"></i>
                 <span>用户管理</span>
               </template>
-              <el-menu-item index="a1-1">获取用户</el-menu-item>
-              <el-menu-item index="a1-2">删除用户</el-menu-item>
-              <el-menu-item index="a1-3">添加用户</el-menu-item>
-              <el-menu-item index="a1-4">修改用户</el-menu-item>
-            </el-submenu>
-            <el-submenu index="a2">
+            </el-menu-item>
+            <el-menu-item index="a2">
               <template slot="title">
                 <i class="el-icon-s-finance"></i>
                 <span>数据库管理</span>
               </template>
-              <el-menu-item index="a2-1">清空数据</el-menu-item>
-              <el-menu-item index="a2-2">备份数据</el-menu-item>
-              <el-menu-item index="a2-3">获取数据</el-menu-item>
-              <el-menu-item index="a2-4">恢复数据</el-menu-item>
-            </el-submenu>
+            </el-menu-item>
           </el-menu>
         </el-aside>
         <el-main> <router-view></router-view> </el-main>
