@@ -15,6 +15,7 @@
             v-model="form.username"
             placeholder="请输入要重置的账号"
             prefix-icon="el-icon-user"
+            @keyup.enter.native="reset"
           ></el-input>
         </el-form-item>
         <el-form-item prop="password">
@@ -23,6 +24,7 @@
             placeholder="请输入更改后的密码"
             type="password"
             prefix-icon="el-icon-lock"
+            @keyup.enter.native="reset"
           ></el-input>
         </el-form-item>
         <el-form-item prop="confirmPassword">
@@ -31,6 +33,7 @@
             placeholder="请再次输入密码"
             type="password"
             prefix-icon="el-icon-lock"
+            @keyup.enter.native="reset"
           ></el-input>
         </el-form-item>
         <el-form-item class="btns">

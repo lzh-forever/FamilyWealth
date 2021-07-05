@@ -15,6 +15,7 @@
             v-model="form.username"
             placeholder="account"
             prefix-icon="el-icon-user"
+            @keyup.enter.native="login"
           ></el-input>
         </el-form-item>
         <el-form-item prop="password">
@@ -23,6 +24,7 @@
             placeholder="password"
             type="password"
             prefix-icon="el-icon-lock"
+            @keyup.enter.native="login"
           ></el-input>
         </el-form-item>
         <el-form-item>
@@ -92,7 +94,7 @@ export default {
                 if (isAdmin) {
                   that.$router.push("/admin");
                 } else {
-                  that.$router.push('/home')
+                  that.$router.push("/home");
                 }
               }
             });

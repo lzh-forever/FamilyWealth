@@ -9,6 +9,7 @@
             v-model="form.username"
             placeholder="请输入管理员账号"
             prefix-icon="el-icon-user"
+            @keyup.enter.native="check"
           ></el-input>
         </el-form-item>
         <el-form-item prop="password">
@@ -17,6 +18,7 @@
             placeholder="请输入管理员密码"
             type="password"
             prefix-icon="el-icon-lock"
+            @keyup.enter.native="check"
           ></el-input>
         </el-form-item>
 
