@@ -1,41 +1,59 @@
 <template>
-  <el-card>
-    <el-row :gutter="15">
-      <el-col :offset="1" :span="8">
-        <el-date-picker
-          v-model="pickdate"
-          type="datetimerange"
-          placeholder="选择日期时间"
-          size="small"
+  <div>
+    <el-card shadow="always">
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item :to="{ path: '/2-1' }"
+          >证券账户管理</el-breadcrumb-item
         >
-        </el-date-picker>
-      </el-col>
-      <el-col :span="2">
-        <el-button size="small" @click="getByTime">按时间筛选</el-button>
-      </el-col>
-      <el-col :offset="3" :span="5">
-        <el-input v-model="input" placeholder="input" size="small"></el-input
-      ></el-col>
-      <el-col :span="2">
-        <el-button size="small" @click="getByCode">按代码筛选</el-button>
-      </el-col>
-    </el-row>
-    <div style="height: 20px"></div>
-    <el-table :data="tableData" height="460" stripe border style="width: 100%">
-      <el-table-column type="index" label="#"></el-table-column>
-      <el-table-column prop="name" label="名称" width="250" sortable>
-      </el-table-column>
-      <el-table-column prop="code" label="代码" width="180" sortable>
-      </el-table-column>
-      <el-table-column prop="buyNum" label="买入数量" width="180" sortable>
-      </el-table-column>
-      <el-table-column prop="saleNum" label="卖出数量" width="180" sortable>
-      </el-table-column>
-      <el-table-column prop="sharePrice" label="交易价格" sortable>
-      </el-table-column>
-      <el-table-column prop="time" label="交易时间" sortable> </el-table-column>
-    </el-table>
-  </el-card>
+        <el-breadcrumb-item :to="{ path: '/2-2' }">持股管理</el-breadcrumb-item>
+      </el-breadcrumb>
+    </el-card>
+
+    <el-card>
+      <el-row :gutter="15">
+        <el-col :offset="1" :span="8">
+          <el-date-picker
+            v-model="pickdate"
+            type="datetimerange"
+            placeholder="选择日期时间"
+            size="small"
+          >
+          </el-date-picker>
+        </el-col>
+        <el-col :span="2">
+          <el-button size="small" @click="getByTime">按时间筛选</el-button>
+        </el-col>
+        <el-col :offset="3" :span="5">
+          <el-input v-model="input" placeholder="input" size="small"></el-input
+        ></el-col>
+        <el-col :span="2">
+          <el-button size="small" @click="getByCode">按代码筛选</el-button>
+        </el-col>
+      </el-row>
+      <div style="height: 20px"></div>
+      <el-table
+        :data="tableData"
+        height="460"
+        stripe
+        border
+        style="width: 100%"
+      >
+        <el-table-column type="index" label="#"></el-table-column>
+        <el-table-column prop="name" label="名称" width="250" sortable>
+        </el-table-column>
+        <el-table-column prop="code" label="代码" width="180" sortable>
+        </el-table-column>
+        <el-table-column prop="buyNum" label="买入数量" width="180" sortable>
+        </el-table-column>
+        <el-table-column prop="saleNum" label="卖出数量" width="180" sortable>
+        </el-table-column>
+        <el-table-column prop="sharePrice" label="交易价格" sortable>
+        </el-table-column>
+        <el-table-column prop="time" label="交易时间" sortable>
+        </el-table-column>
+      </el-table>
+    </el-card>
+  </div>
 </template>
 
 <script>
@@ -116,7 +134,7 @@ export default {
         {
           token: this.token,
           accountID: this.accountID,
-          code: this.input
+          code: this.input,
         }
       );
       if (data.code != 0) {
@@ -136,11 +154,11 @@ export default {
         this.getAll();
       }
     },
-    input(newData){
-      if(newData==''){
+    input(newData) {
+      if (newData == "") {
         this.getAll();
-      } 
-    }
+      }
+    },
   },
 };
 </script>

@@ -81,7 +81,7 @@
                 <span>财务管理</span>
               </template>
               <el-menu-item index="2-1">证券账户管理</el-menu-item>
-              <el-menu-item index="2-2">持股管理</el-menu-item>
+              <el-menu-item index="2-2">交易记录管理</el-menu-item>
             </el-submenu>
             <el-menu-item index="3">
               <i class="el-icon-data-analysis"></i>
