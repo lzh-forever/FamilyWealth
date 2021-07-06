@@ -71,7 +71,7 @@
           <router-link to="/ShareRecord">
             <el-button
               type="success"
-              icon="el-icon-circle-plus-outline"
+              icon="el-icon-view"
               @click="
                 stuckRecord.accountID = scope.row.id;
                 setId(scope.row.id);
