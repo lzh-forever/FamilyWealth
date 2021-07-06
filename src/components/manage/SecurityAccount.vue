@@ -57,13 +57,6 @@
               align="center"
               prop="profit"
             ></el-table-column>
-            <el-table-column label="操作" align="center">
-              <el-tooltip effect="dark" content="编辑" placement="top" :enterable="false">
-                <el-button type="primary" icon="el-icon-edit" @click="gotoEdit(scope.row.id)">
-
-                </el-button>
-              </el-tooltip>
-            </el-table-column>
           </el-table>
         </template>
       </el-table-column>
@@ -105,6 +98,7 @@
                 InitPassword();
               "
             ></el-button>
+
           </el-tooltip>
           <el-tooltip
             effect="dark"
@@ -121,6 +115,12 @@
               "
             ></el-button>
           </el-tooltip>
+                <el-tooltip effect="dark" content="编辑" placement="top" :enterable="false">
+                  <router-link to='/2-2'>
+                <el-button type="primary" icon="el-icon-edit" @click="gotoEdit(scope.row.id)">
+                </el-button>
+                </router-link>
+              </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
