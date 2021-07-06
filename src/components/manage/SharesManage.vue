@@ -62,6 +62,22 @@
         </el-table-column>
         <el-table-column prop="time" label="交易时间" sortable>
         </el-table-column>
+        <el-table-column label="操作" width="120">
+          <template slot-scope="scope">
+            <el-button
+              type="danger"
+              icon="el-icon-delete"
+              size="mini"
+              @click="removeById(scope.row)"
+            ></el-button>
+            <el-button
+              type="warning"
+              icon="el-icon-setting"
+              size="mini"
+              @click="getEditInfo(scope.row)"
+            ></el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </el-card>
     <!-- 添加的对话框 -->
@@ -93,6 +109,36 @@
         <el-button type="primary" @click="addItem">确 定</el-button>
       </span>
     </el-dialog>
+
+    <!-- 修改的对话框 -->
+    <el-dialog title="修改" :visible.sync="editDialogVisible" width="20%">
+      <!-- 内容主体 -->
+      <el-form
+        :model="editForm"
+        :rules="addFormRules"
+        ref="editFormRef"
+        label-width="120px"
+        label-position="left"
+      >
+        <el-form-item label="股票代码" prop="code">
+          <el-input v-model="editForm.code"></el-input>
+        </el-form-item>
+        <el-form-item label="买入股数" prop="buyNum">
+          <el-input v-model="editForm.buyNum"></el-input>
+        </el-form-item>
+        <el-form-item label="卖出股数" prop="saleNum">
+          <el-input v-model="editForm.saleNum"></el-input>
+        </el-form-item>
+        <el-form-item label="交易时价格" prop="sharePrice">
+          <el-input v-model="editForm.sharePrice"></el-input>
+        </el-form-item>
+      </el-form>
+      <!-- 底部区域 -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editItem">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -101,12 +147,20 @@ export default {
   data() {
     return {
       addDialogVisible: false,
+      editDialogVisible: false,
       tableData: [],
       token: window.sessionStorage.getItem("token"),
-      accountID:Number(window.sessionStorage.getItem("accountID")),
+      accountID: Number(window.sessionStorage.getItem("accountID")),
       pickdate: "",
       input: "",
       addForm: {
+        code: "",
+        buyNum: "",
+        saleNum: "",
+        sharePrice: "",
+      },
+      editForm: {
+        id:"",
         code: "",
         buyNum: "",
         saleNum: "",
@@ -130,8 +184,8 @@ export default {
       },
     };
   },
-  mounted () {
-    this.getAll()
+  mounted() {
+    this.getAll();
   },
   methods: {
     async getAll() {
@@ -214,11 +268,11 @@ export default {
     async addItem() {
       const { data } = await this.$http.post("/api/security/operation/add", {
         token: this.token,
-        accountID: '3',
+        accountID: this.accountID,
         code: this.addForm.code,
         buyNum: Number(this.addForm.buyNum),
         saleNum: Number(this.addForm.saleNum),
-        sharePrice: Number(this.addForm.sharePrice)
+        sharePrice: Number(this.addForm.sharePrice),
       });
       var code = data.code;
       if (code == 0) {
@@ -229,6 +283,87 @@ export default {
       }
       this.addDialogVisible = false;
       this.getAll();
+    },
+
+    //编辑记录
+    async editItem() {
+      const { data } = await this.$http.put("/api/security/operation/update", {
+        token: this.token,
+        id:this.editForm.id,
+        accountID: this.accountID,
+        code: this.editForm.code,
+        buyNum: Number(this.editForm.buyNum),
+        saleNum: Number(this.editForm.saleNum),
+        sharePrice: Number(this.editForm.sharePrice),
+      });
+      var code = data.code;
+      if (code == 0) {
+        this.$message({
+          type: "success",
+          message: "修改成功!",
+        });
+        this.editDialogVisible = false;
+        this.getAll();
+      }
+    },
+
+    // 删除弹窗
+    async removeById(removeRow) {
+      const confirmResult = await this.$confirm(
+        "此操作将永久删除该记录, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      ).catch((err) => err);
+
+      if (confirmResult !== "confirm") {
+        return this.$message({
+          type: "info",
+          message: "已取消删除",
+        });
+      }
+      console.log(removeRow.code);
+      const { data: res } = await this.$http.delete(
+        "/api/security/operation/delete",
+        {
+          data: {
+            token: this.token,
+            accountID: this.accountID,
+            code: removeRow.code,
+            id: removeRow.id,
+          },
+        }
+      );
+      if (res.code == 0) {
+        this.$message({
+          type: "success",
+          message: "删除成功!",
+        });
+        this.getAll();
+      }
+    },
+
+    //获取编辑时信息
+    getEditInfo(row) {
+      // var temp = JSON.parse(JSON.stringify(this.editForm.type));
+      this.editDialogVisible = true;
+      this.editForm.id=row.id;
+      this.editForm.code = row.code;
+      this.editForm.buyNum=Number(row.buyNum);
+      this.editForm.saleNum = Number(row.saleNum);
+      this.editForm.sharePrice=Number(row.sharePrice);
+      // if (row.receipt != 0) {
+      //   temp[0] = "in";
+      //   this.editForm.num = row.receipt;
+      // } else {
+      //   temp[0] = "ex";
+      //   this.editForm.num = row.disbursement;
+      // }
+      // temp[1] = row.type;
+      // this.editForm.type = temp;
     },
 
     test() {

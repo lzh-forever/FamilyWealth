@@ -87,7 +87,7 @@
         <el-table-column prop="type" label="收支类型" width="180" sortable>
         </el-table-column>
         <el-table-column prop="note" label="备注"> </el-table-column>
-        <el-table-column label="操作" width="180">
+        <el-table-column label="操作" width="120">
           <template slot-scope="scope">
             <el-button
               type="danger"
