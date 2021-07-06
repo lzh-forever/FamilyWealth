@@ -91,6 +91,7 @@ export default {
                 var isAdmin = data.data.isAdmin;
                 that.$message.success(data.msg);
                 window.sessionStorage.setItem("token", token);
+                window.sessionStorage.setItem('username',that.form.username)
                 if (isAdmin) {
                   that.$router.push("/admin");
                 } else {

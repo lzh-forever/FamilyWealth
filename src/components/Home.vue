@@ -7,7 +7,12 @@
         </div>
         <el-popover placement="bottom" width="140" trigger="hover">
           <div style="text-align: center">
+            <el-button style="width:130px" plain @click="profile">
+              个人资料
+            </el-button>
+            <el-divider></el-divider>
             <el-button
+              type="danger"
               plain
               icon="iconfont icon-dingbudaohang-zhangh"
               @click="logout"
@@ -50,7 +55,7 @@
                 <span>财务管理</span>
               </template>
               <el-menu-item index="2-1">证券账户管理</el-menu-item>
-              <el-menu-item index="2-2">持股管理</el-menu-item>
+              <el-menu-item index="2-2">交易记录管理</el-menu-item>
             </el-submenu>
             <el-menu-item index="3">
               <i class="el-icon-data-analysis"></i>
@@ -79,6 +84,9 @@ export default {
       window.sessionStorage.clear();
       this.$router.replace("/login");
     },
+    profile(){
+      this.$router.push('/profile')
+    }
   },
 };
 </script>
