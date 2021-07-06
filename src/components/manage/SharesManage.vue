@@ -17,7 +17,7 @@
         <el-input v-model="input" placeholder="input" size="small"></el-input
       ></el-col>
       <el-col :span="2">
-        <el-button size="small" @click="getByCode">test</el-button>
+        <el-button size="small" @click="getByCode">按代码筛选</el-button>
       </el-col>
     </el-row>
     <div style="height: 20px"></div>
