@@ -103,7 +103,7 @@ export default {
       addDialogVisible: false,
       tableData: [],
       token: window.sessionStorage.getItem("token"),
-      accountID: window.sessionStorage.getItem("accountID"),
+      accountID:Number(window.sessionStorage.getItem("accountID")),
       pickdate: "",
       input: "",
       addForm: {
@@ -130,6 +130,9 @@ export default {
       },
     };
   },
+  mounted () {
+    this.getAll()
+  },
   methods: {
     async getAll() {
       const { data } = await this.$http.post(
@@ -140,7 +143,7 @@ export default {
         }
       );
       if (data.code == 0) {
-        this.tableData = data.data.operations;
+        this.tableData = data.data.records;
         this.$message.success(data.msg);
       } else {
         this.$message.error(data.msg);
@@ -174,7 +177,7 @@ export default {
         var second1 = this.pickdate[1].getSeconds();
         second1 = second1 > 9 ? second1 : "0" + second1;
         var endTime = `${year1}-${month1}-${date1} ${hour1}:${minute1}:${second1}`;
-        const { data } = await this.$http.put(
+        const { data } = await this.$http.post(
           "/api/security/operation/get_by_time",
           {
             token: this.token,
@@ -186,14 +189,14 @@ export default {
         if (data.code != 0) {
           this.$message.error(data.msg);
         } else {
-          this.tableData = data.data.operations;
+          this.tableData = data.data.records;
           this.$message.success(data.msg);
         }
       }
     },
     async getByCode() {
-      const { data } = await this.$http.put(
-        "/api/security/operation/get_by_time",
+      const { data } = await this.$http.post(
+        "/api/security/operation/get_by_stock",
         {
           token: this.token,
           accountID: this.accountID,
@@ -203,7 +206,7 @@ export default {
       if (data.code != 0) {
         this.$message.error(data.msg);
       } else {
-        this.tableData = data.data.operations;
+        this.tableData = data.data.records;
         this.$message.success(data.msg);
       }
     },
