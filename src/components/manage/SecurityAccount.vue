@@ -36,7 +36,7 @@
         align="center"
         prop="id"
         v-slot="scope"
-        >账户{{ scope.row.id }}</el-table-column
+        >账户{{ scope.$index+1 }}</el-table-column
       >
       <el-table-column
         class="info"
