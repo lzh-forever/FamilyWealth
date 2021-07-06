@@ -20,14 +20,17 @@
     <div style="height: 20px"></div>
     <el-table :data="tableData" height="460" stripe border style="width: 100%">
       <el-table-column type="index" label="#"></el-table-column>
-      <el-table-column prop="name" label="名称" width="250"> </el-table-column>
-      <el-table-column prop="code" label="代码" width="180"> </el-table-column>
-      <el-table-column prop="buyNum" label="买入数量" width="180">
+      <el-table-column prop="name" label="名称" width="250" sortable>
       </el-table-column>
-      <el-table-column prop="saleNum" label="卖出数量" width="180">
+      <el-table-column prop="code" label="代码" width="180" sortable>
       </el-table-column>
-      <el-table-column prop="sharePrice" label="交易价格"> </el-table-column>
-      <el-table-column prop="time" label="交易时间"> </el-table-column>
+      <el-table-column prop="buyNum" label="买入数量" width="180" sortable>
+      </el-table-column>
+      <el-table-column prop="saleNum" label="卖出数量" width="180" sortable>
+      </el-table-column>
+      <el-table-column prop="sharePrice" label="交易价格" sortable>
+      </el-table-column>
+      <el-table-column prop="time" label="交易时间" sortable> </el-table-column>
     </el-table>
   </el-card>
 </template>
@@ -103,17 +106,17 @@ export default {
         }
       }
     },
-    test(){
-        this.pickdate = this.pickdate==null ? 1 : null
-    }
+    test() {
+      this.pickdate = this.pickdate == null ? 1 : null;
+    },
   },
   watch: {
-      pickdate(newData){
-          if(newData==null){
-              this.getAll()
-          }
+    pickdate(newData) {
+      if (newData == null) {
+        this.getAll();
       }
-  }
+    },
+  },
 };
 </script>
 
