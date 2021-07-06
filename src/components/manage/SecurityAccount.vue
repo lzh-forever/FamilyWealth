@@ -14,7 +14,10 @@
       width="665px"
       height="760"
       style="margin-top: 15px"
-      @expand-change="expandChange"
+      @current-change="expandChange"
+
+      :row-key="getRowKeys"
+      :expand-row-keys="expands"
     >
       <el-table-column type="expand" >
         <template>
@@ -220,6 +223,7 @@ export default {
   data() {
     return {
       shareAccountList: [],
+      expands: [],
       shareList: [],
       deleteAccountDialog: false,
       deleteAccountPassword: "",
@@ -233,6 +237,9 @@ export default {
         saleNum: "",
         sharePrice: "",
       },
+        getRowKeys(row) {
+            return row.id;
+        },
       stuckRecordModel: {
         code: "",
         addStuckNum: "",
@@ -356,7 +363,7 @@ export default {
       }
     },
     gotoEdit(id){
-      window.sessionStorage.setItem("accountID",)
+      window.sessionStorage.setItem("accountID",id);
     },
     open(id) {
       this.$notify({
@@ -369,6 +376,8 @@ export default {
       this.deleteAccountPassword = "";
     },
     expandChange(row,expandRows){
+      this.expands = [];
+      this.expands.push(row.id);
       this.findAccountId = row.id;
       this.findAllRecords();
     }
