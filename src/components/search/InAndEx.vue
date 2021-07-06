@@ -262,6 +262,18 @@ export default {
       }
     },
 
+    justInOrEx_e(){
+      if(this.editForm.type[0]=='in')
+      {
+        this.editForm.receipt=Number(this.editForm.num);
+        this.editForm.disbursement=0;
+      }
+      else{
+        this.editForm.disbursement=Number(this.editForm.num);
+        this.editForm.receipt=0;
+      }
+    },
+
     getEditInfo(row){
       var temp =JSON.parse(JSON.stringify(this.editForm.type))
       this.editDialogVisible=true;
@@ -280,6 +292,7 @@ export default {
     },
 
     async editItem(){
+      this.justInOrEx_e();
       const { data } = await this.$http.put(
         "/api/bill/update",
         {token: this.token,
