@@ -29,40 +29,66 @@
     <el-card shadow="always">
       <!-- 查询输入栏 -->
       <div style="margin-top: 0px">
-        <el-input
-          placeholder="请输入内容"
-          v-model="input"
-          class="input-with-select"
-        >
-          <el-select v-model="select" slot="prepend" placeholder="请选择">
-            <el-option label="收入" value="1"></el-option>
-            <el-option label="支出" value="2"></el-option>
-          </el-select>
-          <el-button
-            slot="append"
-            icon="el-icon-search"
-          ></el-button>
-        </el-input>
+        <el-row>
+          <!-- <el-col :span="3">
+            <div class="block"> -->
+          <!-- 查询栏级联选择器 -->
+          <!-- <el-cascader
+                v-model="queryInfo.type"
+                :options="options"
+                :props="{ expandTrigger: 'hover' }"
+              ></el-cascader>
+            </div>
+          </el-col> -->
+          <el-col :span="6">
+            <div class="block">
+              <!-- 查询栏日期时间选择器 -->
+              <el-date-picker
+                v-model="queryInfo.time"
+                type="datetimerange"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+              >
+              </el-date-picker>
+            </div>
+          </el-col>
+          <el-col :span="1">
+            <el-button
+              type="primary"
+              icon="el-icon-search"
+              size="large"
+              @click="queryByTime"
+            ></el-button>
+          </el-col>
+          <el-col :span="1"
+            ><el-button
+              type="primary"
+              icon="el-icon-edit"
+              size="large"
+              @click="addDialogVisible = true"
+            ></el-button
+          ></el-col>
+        </el-row>
       </div>
       <el-table :data="tableData" height="350" border style="width: 100%">
         <el-table-column type="index" label="#"></el-table-column>
-        <el-table-column prop="time" label="日期" width="250">
+        <el-table-column prop="time" label="日期" width="250" sortable>
         </el-table-column>
-        <el-table-column prop="receipt" label="收入金额" width="180">
+        <el-table-column prop="receipt" label="收入金额" width="180" sortable>
         </el-table-column>
-        <el-table-column prop="disbursement" label="支出金额" width="180">
+        <el-table-column
+          prop="disbursement"
+          label="支出金额"
+          width="180"
+          sortable
+        >
         </el-table-column>
-        <el-table-column prop="type" label="收支类型" width="180">
+        <el-table-column prop="type" label="收支类型" width="180" sortable>
         </el-table-column>
         <el-table-column prop="note" label="备注"> </el-table-column>
         <el-table-column label="操作" width="180">
           <template slot-scope="scope">
-            <el-button
-              type="primary"
-              icon="el-icon-edit"
-              size="mini"
-              @click="addDialogVisible = true"
-            ></el-button>
             <el-button
               type="danger"
               icon="el-icon-delete"
@@ -81,7 +107,7 @@
     </el-card>
 
     <!-- 添加的对话框 -->
-    <el-dialog title="提示" :visible.sync="addDialogVisible" width="20%">
+    <el-dialog title="新增记录" :visible.sync="addDialogVisible" width="20%">
       <!-- 内容主体 -->
       <el-form
         :model="addForm"
@@ -107,9 +133,7 @@
       <!-- 底部区域 -->
       <span slot="footer" class="dialog-footer">
         <el-button @click="addDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addItem" 
-          >确 定</el-button
-        >
+        <el-button type="primary" @click="addItem">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -140,9 +164,7 @@
       <!-- 底部区域 -->
       <span slot="footer" class="dialog-footer">
         <el-button @click="editDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="editItem" 
-          >确 定</el-button
-        >
+        <el-button type="primary" @click="editItem">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -156,9 +178,15 @@ export default {
     return {
       // 控制添加对话框的显示和隐藏
       addDialogVisible: false,
-      editDialogVisible:false,
+      editDialogVisible: false,
       input: "",
       select: "",
+      queryInfo: {
+        time: [],
+        type: [],
+        beginTime: "",
+        endTime: "",
+      },
       tableData: [],
       //添加记录的数据
       options: [
@@ -207,20 +235,59 @@ export default {
           ],
         },
       ],
-      editForm:{
+      option1: {
+        title: {
+          text: "支出",
+        },
+        tooltip: {},
+        legend: {
+          data: ["支出"],
+        },
+        xAxis: {
+          data: ["税收", "衣食住行", "医疗", "其他"],
+        },
+        yAxis: {},
+        series: [
+          {
+            name: "销量",
+            type: "bar",
+            data: [0, 0, 0, 0],
+          },
+        ],
+      },
+      option2: {
+        title: {
+          text: "收入",
+        },
+        series: [
+          {
+            name: "访问来源",
+            type: "pie",
+            radius: "55%",
+            roseType: "angle",
+            data: [
+              { value: 0, name: "工资" },
+              { value: 0, name: "股票" },
+              { value: 0, name: "分红" },
+              { value: 0, name: "奖金" },
+            ],
+          },
+        ],
+      },
+      editForm: {
         type: [],
         num: 0,
         text: "",
-        receipt:0,
-        disbursement:0,
-        id: 0
+        receipt: 0,
+        disbursement: 0,
+        id: 0,
       },
       addForm: {
         type: [],
-        num: 0,
+        num: "",
         text: "",
-        receipt:0,
-        disbursement:0
+        receipt: 0,
+        disbursement: 0,
       },
       // 添加表单的验证规则
       addFormRules: {
@@ -230,86 +297,65 @@ export default {
         ],
         type: [{ required: true }],
       },
-      // editFormRules: {
-      //   Enum: [
-      //     { required: true, message: "请输入内容", trigger: "blur" },
-      //     { min: 0, max: 10, message: "0到10位", trigger: "blur" },
-      //   ],
-      //   Etype: [{ required: true }],
-      //   Etext:[{}]
-      // },
       token: window.sessionStorage.getItem("token"),
-      testForm: {
-        token: window.sessionStorage.getItem("token"),
-        receipt: 20,
-        disbursement: 0,
-        type: "学习",
-        note: "test_addItem",
-      },
     };
   },
 
   methods: {
-    justInOrEx(){
-      if(this.addForm.type[0]=='in')
-      {
-        this.addForm.receipt=Number(this.addForm.num);
-        this.addForm.disbursement=0;
-      }
-      else{
-        this.addForm.disbursement=Number(this.addForm.num);
-        this.addForm.receipt=0;
+    justInOrEx() {
+      if (this.addForm.type[0] == "in") {
+        this.addForm.receipt = Number(this.addForm.num);
+        this.addForm.disbursement = 0;
+      } else {
+        this.addForm.disbursement = Number(this.addForm.num);
+        this.addForm.receipt = 0;
       }
     },
 
-    justInOrEx_e(){
-      if(this.editForm.type[0]=='in')
-      {
-        this.editForm.receipt=Number(this.editForm.num);
-        this.editForm.disbursement=0;
-      }
-      else{
-        this.editForm.disbursement=Number(this.editForm.num);
-        this.editForm.receipt=0;
+    justInOrEx_e() {
+      if (this.editForm.type[0] == "in") {
+        this.editForm.receipt = Number(this.editForm.num);
+        this.editForm.disbursement = 0;
+      } else {
+        this.editForm.disbursement = Number(this.editForm.num);
+        this.editForm.receipt = 0;
       }
     },
 
-    getEditInfo(row){
-      var temp =JSON.parse(JSON.stringify(this.editForm.type))
-      this.editDialogVisible=true;
-      this.editForm.id=row.id;
-      this.editForm.text=row.note;
-      if(row.receipt!=0){
-        temp[0]='in';
-        this.editForm.num=row.receipt;
+    getEditInfo(row) {
+      var temp = JSON.parse(JSON.stringify(this.editForm.type));
+      this.editDialogVisible = true;
+      this.editForm.id = row.id;
+      this.editForm.text = row.note;
+      if (row.receipt != 0) {
+        temp[0] = "in";
+        this.editForm.num = row.receipt;
+      } else {
+        temp[0] = "ex";
+        this.editForm.num = row.disbursement;
       }
-      else{
-        temp[0]='ex';
-        this.editForm.num=row.disbursement;
-      }
-      temp[1]=row.type;
-      this.editForm.type= temp;
+      temp[1] = row.type;
+      this.editForm.type = temp;
     },
 
-    async editItem(){
+    async editItem() {
       this.justInOrEx_e();
-      const { data } = await this.$http.put(
-        "/api/bill/update",
-        {token: this.token,
-        id:this.editForm.id,
-        receipt:this.editForm.receipt,
-        disbursement:this.editForm.disbursement,
+      const { data } = await this.$http.put("/api/bill/update", {
+        token: this.token,
+        id: this.editForm.id,
+        receipt: this.editForm.receipt,
+        disbursement: this.editForm.disbursement,
         type: this.editForm.type[1],
-        note:this.editForm.text }
-      );
-      var code =data.code;
-      if(code==0){
+        note: this.editForm.text,
+      });
+      var code = data.code;
+      if (code == 0) {
         this.$message({
           type: "success",
           message: "修改成功!",
         });
-      this.editDialogVisible=false;
-      this.getAll();
+        this.editDialogVisible = false;
+        this.getAll();
       }
     },
 
@@ -318,18 +364,21 @@ export default {
       console.log(this.addForm.receipt);
       console.log(this.addForm.disbursement);
       console.log(this.addForm.type[1]);
-      const { data } = await this.$http.post(
-        "/api/bill/add",
-        {token: this.token,receipt:this.addForm.receipt,disbursement:this.addForm.disbursement,type: this.addForm.type[1],note:this.addForm.text }
-      );
-      var code =data.code;
-      if(code==0){
+      const { data } = await this.$http.post("/api/bill/add", {
+        token: this.token,
+        receipt: this.addForm.receipt,
+        disbursement: this.addForm.disbursement,
+        type: this.addForm.type[1],
+        note: this.addForm.text,
+      });
+      var code = data.code;
+      if (code == 0) {
         this.$message({
           type: "success",
           message: "添加成功!",
         });
       }
-      this.addDialogVisible=false;
+      this.addDialogVisible = false;
       this.getAll();
     },
 
@@ -346,6 +395,7 @@ export default {
       } else {
         this.$message.error("ERROR");
       }
+      this.initChart();
     },
 
     // 删除弹窗
@@ -383,6 +433,83 @@ export default {
         this.getAll();
       }
     },
+
+    //初始化图表
+    async initChart() {
+      var myChart1 = echarts.init(document.getElementById("main"));
+      var myChart2 = echarts.init(document.getElementById("secondary"));
+      const { data } = await this.$http.post("/api/bill/get_sum_by_type", {
+        token: this.token,
+      });
+      this.option1.series[0].data = data.data.disbursement;
+      for (var i = 0; i < 4; i++) {
+        this.option2.series[0].data[i].value = data.data.receipt[i];
+      }
+      // 使用刚指定的配置项和数据显示图表。
+      myChart1.setOption(this.option1);
+      myChart2.setOption(this.option2);
+    },
+    //时间查询
+    async queryByTime() {
+      if (this.queryInfo.time == null || this.queryInfo.time == "") {
+        this.$message.error("请输入时间");
+      } else {
+        var date = this.queryInfo.time[0].getDate();
+        date = date > 9 ? date : "0" + date;
+        var month = this.queryInfo.time[0].getMonth() + 1;
+        month = month > 9 ? month : "0" + month;
+        var year = this.queryInfo.time[0].getFullYear();
+        var hour = this.queryInfo.time[0].getHours();
+        hour = hour > 9 ? hour : "0" + hour;
+        var minute = this.queryInfo.time[0].getMinutes();
+        minute = minute > 9 ? minute : "0" + minute;
+        var second = this.queryInfo.time[0].getSeconds();
+        second = second > 9 ? second : "0" + second;
+        var beginTime = `${year}-${month}-${date} ${hour}:${minute}:${second}`;
+        var date1 = this.queryInfo.time[1].getDate();
+        date1 = date1 > 9 ? date1 : "0" + date1;
+        var month1 = this.queryInfo.time[1].getMonth() + 1;
+        month1 = month1 > 9 ? month1 : "0" + month1;
+        var year1 = this.queryInfo.time[1].getFullYear();
+        var hour1 = this.queryInfo.time[1].getHours();
+        hour1 = hour1 > 9 ? hour1 : "0" + hour1;
+        var minute1 = this.queryInfo.time[1].getMinutes();
+        minute1 = minute1 > 9 ? minute1 : "0" + minute1;
+        var second1 = this.queryInfo.time[1].getSeconds();
+        second1 = second1 > 9 ? second1 : "0" + second1;
+        var endTime = `${year1}-${month1}-${date1} ${hour1}:${minute1}:${second1}`;
+        this.queryInfo.beginTime = beginTime;
+        this.queryInfo.endTime = endTime;
+        console.log(beginTime);
+        console.log(endTime);
+        const { data } = await this.$http.post("/api/bill/get_by_time", {
+          token: this.token,
+          beginTime: beginTime,
+          endTime: endTime,
+        });
+        if (data.code != 0) {
+          this.$message.error(data.msg);
+        } else {
+          this.tableData = data.data.records;
+          this.$message.success(data.msg);
+        }
+      }
+    },
+
+    async queryByType() {
+      const { data } = await this.$http.post("/api/bill/get_by_type", {
+        token: this.token,
+        type: this.queryInfo.type[1],
+      });
+      console.log(this.queryInfo.type);
+      console.log(data);
+      if (data.code != 0) {
+        this.$message.error(data.msg);
+      } else {
+        this.tableData = data.data.records;
+        this.$message.success(data.msg);
+      }
+    },
   },
 
   created() {
@@ -390,53 +517,17 @@ export default {
   },
 
   mounted() {
-    var myChart1 = echarts.init(document.getElementById("main"));
-    var myChart2 = echarts.init(document.getElementById("secondary"));
-    // 指定图表的配置项和数据
-    var option1 = {
-      title: {
-        text: "支出",
-      },
-      tooltip: {},
-      legend: {
-        data: ["支出"],
-      },
-      xAxis: {
-        data: ["餐饮", "购物 ", "娱乐", "交通", "理财", "转账"],
-      },
-      yAxis: {},
-      series: [
-        {
-          name: "销量",
-          type: "bar",
-          data: [5, 20, 36, 10, 10, 20],
-        },
-      ],
-    };
-    var option2 = {
-      title: {
-        text: "收入",
-      },
-      series: [
-        {
-          name: "访问来源",
-          type: "pie",
-          radius: "55%",
-          roseType: "angle",
-          data: [
-            { value: 235, name: "转账" },
-            { value: 274, name: "工资" },
-            { value: 310, name: "红包" },
-            { value: 335, name: "公积金" },
-            { value: 400, name: "理财" },
-          ],
-        },
-      ],
-    };
-    // 使用刚指定的配置项和数据显示图表。
-    myChart1.setOption(option1);
-    myChart2.setOption(option2);
+    this.initChart();
   },
+
+  watch: {
+     queryInfo:{//深度监听，可监听到对象、数组的变化
+         handler(val, oldVal){
+           this.getAll();
+         },
+         deep:true //true 深度监听
+     }
+  }
 };
 </script>
 
