@@ -1,0 +1,16 @@
+{
+  "id": "2653127",
+  "name": "project",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "7674884",
+      "name": "退出",
+      "font_class": "dingbudaohang-zhangh",
+      "unicode": "e715",
+      "unicode_decimal": 59157
+    }
+  ]
+}

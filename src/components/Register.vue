@@ -65,11 +65,11 @@ export default {
   data() {
     return {
       form: {
-        name: "lzh",
-        username: "admin",
-        password: "123456",
-        inviteUsername: "xiaoai",
-        invitePassword: "123456",
+        name: "",
+        username: "",
+        password: "",
+        inviteUsername: "",
+        invitePassword: "",
       },
       rules: {
         username: [
@@ -120,7 +120,7 @@ export default {
                     } else {
                       var token = data.data.token;
                       var isAdmin = data.data.isAdmin;
-                      that.$message.success("login success");
+                      that.$message.success(data.msg);
                       window.sessionStorage.setItem("token", token);
                       if (isAdmin) {
                         that.$router.replace("/admin");

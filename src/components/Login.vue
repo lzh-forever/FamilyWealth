@@ -60,8 +60,8 @@ export default {
   data() {
     return {
       form: {
-        username: "xiaoai",
-        password: "123456",
+        username: "",
+        password: "",
       },
       rules: {
         username: [
@@ -89,7 +89,7 @@ export default {
               } else {
                 var token = data.data.token;
                 var isAdmin = data.data.isAdmin;
-                that.$message.success("success");
+                that.$message.success(data.msg);
                 window.sessionStorage.setItem("token", token);
                 if (isAdmin) {
                   that.$router.push("/admin");
