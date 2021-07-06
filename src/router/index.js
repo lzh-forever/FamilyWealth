@@ -12,7 +12,7 @@ import dbmanage from '../components/admin-dbmanage/dbmanage.vue'
 import Admin from '../components/Admin.vue'
 //用户主页和欢迎页
 import Home from '../components/Home.vue'
-import Welcome from '../components/Welcome.vue'
+import Profile from '../components/Profile.vue'
 //收支详情子菜单
 import InAndEx from '../components/search/InAndEx.vue'
 import FinancialList from '../components/search/FinancialList.vue'
@@ -35,9 +35,9 @@ const routes = [
   {
     path: '/home',
     component: Home,
-    redirect: '/welcome',
+    redirect: '/1-1',
     children: [
-      { path: '/welcome', component: Welcome },
+      { path: '/profile', component: Profile },
       { path: '/1-1', component: InAndEx },
       { path: '/1-2', component: FinancialList },
       { path: '/1-3', component: Shares },
