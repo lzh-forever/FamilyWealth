@@ -38,18 +38,9 @@
             <el-option label="收入" value="1"></el-option>
             <el-option label="支出" value="2"></el-option>
           </el-select>
-          <!-- <el-date-picker
-            v-model="value2"
-            align="right"
-            type="date"
-            placeholder="选择日期"
-            :picker-options="pickerOptions"
-          >
-          </el-date-picker> -->
           <el-button
             slot="append"
             icon="el-icon-search"
-            @click="addUser"
           ></el-button>
         </el-input>
       </div>
@@ -82,6 +73,7 @@
               type="warning"
               icon="el-icon-setting"
               size="mini"
+              @click="getEditInfo(scope.row)"
             ></el-button>
           </template>
         </el-table-column>
@@ -106,14 +98,49 @@
             v-model="addForm.type"
             :options="options"
             :props="{ expandTrigger: 'hover' }"
-            @change="handleChange"
           ></el-cascader>
+        </el-form-item>
+        <el-form-item label="备注" prop="text">
+          <el-input v-model="addForm.text"></el-input>
         </el-form-item>
       </el-form>
       <!-- 底部区域 -->
       <span slot="footer" class="dialog-footer">
         <el-button @click="addDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addDialogVisible = false"
+        <el-button type="primary" @click="addItem" 
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+
+    <!-- 修改的对话框 -->
+    <el-dialog title="修改" :visible.sync="editDialogVisible" width="20%">
+      <!-- 内容主体 -->
+      <el-form
+        :model="editForm"
+        :rules="addFormRules"
+        ref="editFormRef"
+        label-width="120px"
+        label-position="left"
+      >
+        <el-form-item label="收支金额" prop="num">
+          <el-input v-model="editForm.num"></el-input>
+        </el-form-item>
+        <el-form-item label="收支类型" prop="type">
+          <el-cascader
+            v-model="editForm.type"
+            :options="options"
+            :props="{ expandTrigger: 'hover' }"
+          ></el-cascader>
+        </el-form-item>
+        <el-form-item label="备注" prop="text">
+          <el-input v-model="editForm.text"></el-input>
+        </el-form-item>
+      </el-form>
+      <!-- 底部区域 -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editItem" 
           >确 定</el-button
         >
       </span>
@@ -129,6 +156,7 @@ export default {
     return {
       // 控制添加对话框的显示和隐藏
       addDialogVisible: false,
+      editDialogVisible:false,
       input: "",
       select: "",
       tableData: [],
@@ -179,12 +207,20 @@ export default {
           ],
         },
       ],
+      editForm:{
+        type: [],
+        num: 0,
+        text: "",
+        receipt:0,
+        disbursement:0,
+        id: 0
+      },
       addForm: {
         type: [],
-        InAndExNum: "",
-        Intype: "",
-        num: "",
-        data: "",
+        num: 0,
+        text: "",
+        receipt:0,
+        disbursement:0
       },
       // 添加表单的验证规则
       addFormRules: {
@@ -194,38 +230,95 @@ export default {
         ],
         type: [{ required: true }],
       },
+      // editFormRules: {
+      //   Enum: [
+      //     { required: true, message: "请输入内容", trigger: "blur" },
+      //     { min: 0, max: 10, message: "0到10位", trigger: "blur" },
+      //   ],
+      //   Etype: [{ required: true }],
+      //   Etext:[{}]
+      // },
       token: window.sessionStorage.getItem("token"),
       testForm: {
         token: window.sessionStorage.getItem("token"),
         receipt: 20,
         disbursement: 0,
         type: "学习",
-        note: "test_addUser",
+        note: "test_addItem",
       },
     };
   },
 
   methods: {
-    async addUser() {
-      const { response } = await this.$http.post(
-        "/api/bill/add",
-        this.testForm
-      );
-      this.getAll();
+    justInOrEx(){
+      if(this.addForm.type[0]=='in')
+      {
+        this.addForm.receipt=Number(this.addForm.num);
+        this.addForm.disbursement=0;
+      }
+      else{
+        this.addForm.disbursement=Number(this.addForm.num);
+        this.addForm.receipt=0;
+      }
     },
 
-    // async getAll() {
-    //   const { data } = await this.$http.post("/api/bill/get_all", {
-    //     token: window.sessionStorage.getItem("token"),
-    //   });
-    //   if (data.code !== 0) {
-    //     console.log("获取失败");
-    //     return this.$message.error("获取用户列表失败");
-    //   } else {
-    //     console.log("获取成功");
-    //     this.tableData = data.data.records;
-    //   }
-    // },
+    getEditInfo(row){
+      var temp =JSON.parse(JSON.stringify(this.editForm.type))
+      this.editDialogVisible=true;
+      this.editForm.id=row.id;
+      this.editForm.text=row.note;
+      if(row.receipt!=0){
+        temp[0]='in';
+        this.editForm.num=row.receipt;
+      }
+      else{
+        temp[0]='ex';
+        this.editForm.num=row.disbursement;
+      }
+      temp[1]=row.type;
+      this.editForm.type= temp;
+    },
+
+    async editItem(){
+      const { data } = await this.$http.put(
+        "/api/bill/update",
+        {token: this.token,
+        id:this.editForm.id,
+        receipt:this.editForm.receipt,
+        disbursement:this.editForm.disbursement,
+        type: this.editForm.type[1],
+        note:this.editForm.text }
+      );
+      var code =data.code;
+      if(code==0){
+        this.$message({
+          type: "success",
+          message: "修改成功!",
+        });
+      this.editDialogVisible=false;
+      this.getAll();
+      }
+    },
+
+    async addItem() {
+      this.justInOrEx();
+      console.log(this.addForm.receipt);
+      console.log(this.addForm.disbursement);
+      console.log(this.addForm.type[1]);
+      const { data } = await this.$http.post(
+        "/api/bill/add",
+        {token: this.token,receipt:this.addForm.receipt,disbursement:this.addForm.disbursement,type: this.addForm.type[1],note:this.addForm.text }
+      );
+      var code =data.code;
+      if(code==0){
+        this.$message({
+          type: "success",
+          message: "添加成功!",
+        });
+      }
+      this.addDialogVisible=false;
+      this.getAll();
+    },
 
     async getAll() {
       const { data: response } = await this.$http.post("/api/bill/get_all", {
