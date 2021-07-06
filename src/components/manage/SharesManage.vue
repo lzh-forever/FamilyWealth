@@ -13,9 +13,12 @@
       <el-col :span="2">
         <el-button size="small" @click="getByTime">按时间筛选</el-button>
       </el-col>
-      <!-- <el-col :span="2">
-        <el-button size="small" @click="test">test</el-button>
-      </el-col> -->
+      <el-col :offset="3" :span="5">
+        <el-input v-model="input" placeholder="input" size="small"></el-input
+      ></el-col>
+      <el-col :span="2">
+        <el-button size="small" @click="getByCode">test</el-button>
+      </el-col>
     </el-row>
     <div style="height: 20px"></div>
     <el-table :data="tableData" height="460" stripe border style="width: 100%">
@@ -43,6 +46,7 @@ export default {
       token: window.sessionStorage.getItem("token"),
       accountID: window.sessionStorage.getItem("accountID"),
       pickdate: "",
+      input: "",
     };
   },
   methods: {
@@ -106,6 +110,22 @@ export default {
         }
       }
     },
+    async getByCode() {
+      const { data } = await this.$http.put(
+        "/api/security/operation/get_by_time",
+        {
+          token: this.token,
+          accountID: this.accountID,
+          code: this.input
+        }
+      );
+      if (data.code != 0) {
+        this.$message.error(data.msg);
+      } else {
+        this.tableData = data.data.operations;
+        this.$message.success(data.msg);
+      }
+    },
     test() {
       this.pickdate = this.pickdate == null ? 1 : null;
     },
@@ -116,6 +136,11 @@ export default {
         this.getAll();
       }
     },
+    input(newData){
+      if(newData==''){
+        this.getAll();
+      } 
+    }
   },
 };
 </script>
