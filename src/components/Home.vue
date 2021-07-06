@@ -3,7 +3,7 @@
     <el-container class="home-container">
       <el-header>
         <div>
-        <h1 data-shadow="家庭财务管理">家庭财务管理</h1>
+          <h1 data-shadow="家庭财务管理">家庭财务管理</h1>
         </div>
         <!--顶部菜单-->
         <el-menu
@@ -35,11 +35,22 @@
             ></el-menu-item
           >
         </el-menu>
-        <div>
+        <el-popover placement="bottom" width="140" trigger="hover">
+          <div style="text-align: center">
+            <el-button
+              plain
+              icon="iconfont icon-dingbudaohang-zhangh"
+              @click="logout"
+              style="width: 130px"
+              >退出</el-button
+            >
+          </div>
           <el-avatar
+            slot="reference"
+            id="avatar"
             src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
           ></el-avatar>
-        </div>
+        </el-popover>
       </el-header>
       <el-container>
         <el-aside :width="isCollapse ? '64px' : '200px'">
@@ -95,6 +106,10 @@ export default {
     toggleCollapse() {
       this.isCollapse = !this.isCollapse;
     },
+    logout() {
+      window.sessionStorage.clear();
+      this.$router.replace("/login");
+    },
   },
 };
 </script>
@@ -140,5 +155,9 @@ export default {
   color: #fff;
   text-align: center;
   cursor: pointer;
+}
+
+#avatar {
+  margin-top: 9px;
 }
 </style>

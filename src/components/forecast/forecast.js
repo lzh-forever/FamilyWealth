@@ -33,7 +33,7 @@ function calculateMA(dayCount) {
         for (var j = 0; j < dayCount; j++) {
             sum += data0.values[i - j][1];
         }
-        result.push(sum / dayCount);
+        result.push((sum / dayCount).toFixed(2));
     }
     return result;
 }

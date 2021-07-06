@@ -23,34 +23,10 @@ export default {
     };
   },
   mounted() {
-    // const option = {
-    //   toolbox: { feature: { saveAsImage: {} } },
-    //   tooltip: {},
-    //   xAxis: {
-    //     type: "category",
-    //     data: ["2017-10-24", "2017-10-25", "2017-10-26", "2017-10-27"],
-    //   },
-    //   yAxis: { type: "value" },
-    //   series: [
-    //     {
-    //       data: [
-    //         // 开盘价、收盘价、最低价、最高价
-    //         [20, 30, 10.4, 35],
-    //         [40, 35, 30, 55],
-    //         [33, 38, 32, 40],
-    //         [40, 48, 32, 50],
-    //       ],
-    //       itemStyle: {
-    //         color: "#d87c7c",
-    //         color0: "#919e8b",
-    //         borderColor: "#d87c7c",
-    //         borderColor0: "#919e8b",
-    //       },
-    //       type: "k",
-    //     },
-    //   ],
-    // };
-    // myChart.setOption(option);
+    var myChart = echarts.init(document.getElementById("main"));
+    var option = window.localStorage.getItem("option");
+    myChart.setOption( JSON.parse(option))
+    this.input = window.localStorage.getItem('code')
   },
   methods: {
     forecast() {
@@ -73,7 +49,7 @@ export default {
     getResult() {
       var that = this;
       this.$http
-        .get("http://192.168.43.54:5000/forecast?code=" + this.input)
+        .get("http://192.168.43.23:5000/forecast?code=" + this.input)
         .then(
           function (response) {
             console.log(response.data);
@@ -85,6 +61,10 @@ export default {
               var rawData = response.data.data;
               setData0(splitData(rawData));
               var option = getOption();
+
+              window.localStorage.setItem("option", JSON.stringify(option));
+              window.localStorage.setItem('code',that.input)
+
               myChart.setOption(option);
               loadingInstance.close();
             }
