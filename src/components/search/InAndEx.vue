@@ -2,7 +2,7 @@
   <div>
     <el-card shadow="always">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/1-1' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>收支详情</el-breadcrumb-item>
         <el-breadcrumb-item>收支查询</el-breadcrumb-item>
       </el-breadcrumb>
@@ -71,7 +71,7 @@
           ></el-col>
         </el-row>
       </div>
-      <el-table :data="tableData" height="350" border style="width: 100%">
+      <el-table :data="tableData" height="350" border style="width: 100%" stripe>
         <el-table-column type="index" label="#"></el-table-column>
         <el-table-column prop="time" label="日期" width="250" sortable>
         </el-table-column>
@@ -294,6 +294,7 @@ export default {
         num: [
           { required: true, message: "请输入内容", trigger: "blur" },
           { min: 0, max: 10, message: "0到10位", trigger: "blur" },
+          { pattern: /^[1-9]\d*$/, required: true, message: "请输入正整数", trigger: "blur" }
         ],
         type: [{ required: true }],
       },

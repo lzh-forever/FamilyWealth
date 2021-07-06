@@ -3,38 +3,8 @@
     <el-container class="home-container">
       <el-header>
         <div>
-          <h1 data-shadow="家庭财务管理">家庭财务管理</h1>
+          <h1 data-shadow="家庭财务管理">喵喵喵家庭财务管理</h1>
         </div>
-        <!--顶部菜单-->
-        <el-menu
-          :default-active="activeIndex2"
-          class="el-menu-demo"
-          mode="horizontal"
-          @select="handleSelect"
-          background-color="rgb(5, 107, 110)"
-          text-color="#fff"
-          active-text-color="#ffd04b"
-        >
-          <el-menu-item index="1">处理中心</el-menu-item>
-          <el-submenu index="2">
-            <template slot="title">我的工作台</template>
-            <el-menu-item index="2-1">选项1</el-menu-item>
-            <el-menu-item index="2-2">选项2</el-menu-item>
-            <el-menu-item index="2-3">选项3</el-menu-item>
-            <el-submenu index="2-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="2-4-1">选项1</el-menu-item>
-              <el-menu-item index="2-4-2">选项2</el-menu-item>
-              <el-menu-item index="2-4-3">选项3</el-menu-item>
-            </el-submenu>
-          </el-submenu>
-          <el-menu-item index="3">消息中心</el-menu-item>
-          <el-menu-item index="4"
-            ><a href="https://www.ele.me" target="_blank"
-              >账户管理</a
-            ></el-menu-item
-          >
-        </el-menu>
         <el-popover placement="bottom" width="140" trigger="hover">
           <div style="text-align: center">
             <el-button
@@ -64,16 +34,15 @@
             :collapse="isCollapse"
             :collapse-transition="false"
             router="ture"
+            default-active="1-1"
           >
             <!--侧边栏菜单-->
-            <el-submenu index="1">
+            <el-submenu index="1" >
               <template slot="title">
                 <i class="el-icon-s-marketing"></i>
                 <span>收支详情</span>
               </template>
               <el-menu-item index="1-1">收支查询</el-menu-item>
-              <el-menu-item index="1-2">财务报表</el-menu-item>
-              <el-menu-item index="1-3">证券流水</el-menu-item>
             </el-submenu>
             <el-submenu index="2">
               <template slot="title">

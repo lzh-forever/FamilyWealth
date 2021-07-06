@@ -35,7 +35,7 @@ const routes = [
   {
     path: '/home',
     component: Home,
-    redirect: '/welcome',
+    redirect: '/1-1',
     children: [
       { path: '/welcome', component: Welcome },
       { path: '/1-1', component: InAndEx },
