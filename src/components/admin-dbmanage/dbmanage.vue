@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <el-row gutter="20">
       <el-col :span="7">
         <el-input
@@ -19,7 +18,12 @@
         >
       </el-col>
       <el-col :span="2.5">
-        <el-button type="primary" @click="CcenterDialogVisible = true;InitC()"
+        <el-button
+          type="primary"
+          @click="
+            CcenterDialogVisible = true;
+            InitC();
+          "
           >清空数据库</el-button
         >
       </el-col>
@@ -32,12 +36,18 @@
       center
       v-if="centerDialogVisible"
     >
-          <el-input label="管理员密码:" placeholder="请输入管理员密码" v-model="adminPassword" clearable="true">
-        </el-input>
+      <el-input
+        label="管理员密码:"
+        placeholder="请输入管理员密码"
+        v-model="adminPassword"
+        clearable="true"
+        show-password
+      >
+      </el-input>
 
       <!--底部按钮-->
       <span slot="footer" class="dialog-footer">
-        <el-button @click="centerDialogVisible = false;">取 消</el-button>
+        <el-button @click="centerDialogVisible = false">取 消</el-button>
         <el-button
           type="danger"
           @click="
@@ -47,9 +57,8 @@
           >确认删除</el-button
         >
       </span>
-      
     </el-dialog>
-<!--添加还原用户的对话框-->
+    <!--添加还原用户的对话框-->
     <el-dialog
       title="还原确认界面"
       :visible.sync="BcenterDialogVisible"
@@ -57,12 +66,17 @@
       center
       v-if="BcenterDialogVisible"
     >
-          <el-input label="管理员密码:" placeholder="请输入管理员密码" v-model="BadminPassword" clearable="true">
-        </el-input>
+      <el-input
+        label="管理员密码:"
+        placeholder="请输入管理员密码"
+        v-model="BadminPassword"
+        clearable="true"
+      >
+      </el-input>
 
       <!--底部按钮-->
       <span slot="footer" class="dialog-footer">
-        <el-button @click="BcenterDialogVisible = false;">取 消</el-button>
+        <el-button @click="BcenterDialogVisible = false">取 消</el-button>
         <el-button
           type="success"
           @click="
@@ -72,10 +86,9 @@
           >确认还原</el-button
         >
       </span>
-      
     </el-dialog>
 
-<!--全部删除数据库备份的对话框-->
+    <!--全部删除数据库备份的对话框-->
     <el-dialog
       title="删除确认界面"
       :visible.sync="CcenterDialogVisible"
@@ -83,12 +96,17 @@
       center
       v-if="CcenterDialogVisible"
     >
-          <el-input label="管理员密码:" placeholder="请输入管理员密码" v-model="CadminPassword" clearable="true">
-        </el-input>
+      <el-input
+        label="管理员密码:"
+        placeholder="请输入管理员密码"
+        v-model="CadminPassword"
+        clearable="true"
+      >
+      </el-input>
 
       <!--底部按钮-->
       <span slot="footer" class="dialog-footer">
-        <el-button @click="CcenterDialogVisible = false;">取 消</el-button>
+        <el-button @click="CcenterDialogVisible = false">取 消</el-button>
         <el-button
           type="danger"
           @click="
@@ -98,7 +116,6 @@
           >确认删除</el-button
         >
       </span>
-      
     </el-dialog>
     <el-table
       stripe
@@ -107,23 +124,58 @@
       width="665px"
       height="760"
       style="margin-top: 15px"
-      
     >
-      <el-table-column class="info" type="index" label="序号" align="center" width="100px"></el-table-column>
-      <el-table-column class="info" label="数据库名称" align="center" prop="name"></el-table-column>
+      <el-table-column
+        class="info"
+        type="index"
+        label="序号"
+        align="center"
+        width="100px"
+      ></el-table-column>
+      <el-table-column
+        class="info"
+        label="数据库名称"
+        align="center"
+        prop="name"
+      ></el-table-column>
       <el-table-column class="info" label="操作" align="center">
         <template slot-scope="scope">
-          <el-tooltip effect="dark" content="删除" placement="top" :enterable="false">
-            <el-button type="danger" icon="el-icon-delete" @click="centerDialogVisible = true;dbDeleteName = scope.row.name;Init()">
+          <el-tooltip
+            effect="dark"
+            content="删除"
+            placement="top"
+            :enterable="false"
+          >
+            <el-button
+              type="danger"
+              icon="el-icon-delete"
+              @click="
+                centerDialogVisible = true;
+                dbDeleteName = scope.row.name;
+                Init();
+              "
+            >
             </el-button>
           </el-tooltip>
-          <el-tooltip effect="dark" content="恢复" placement="top" :enterable="false">
-            <el-button type="success" icon="el-icon-check" @click="BcenterDialogVisible = true;dbSetbackName = scope.row.name;InitB()">
+          <el-tooltip
+            effect="dark"
+            content="恢复"
+            placement="top"
+            :enterable="false"
+          >
+            <el-button
+              type="success"
+              icon="el-icon-check"
+              @click="
+                BcenterDialogVisible = true;
+                dbSetbackName = scope.row.name;
+                InitB();
+              "
+            >
             </el-button>
           </el-tooltip>
         </template>
       </el-table-column>
-
     </el-table>
   </div>
 </template>
@@ -134,26 +186,26 @@ export default {
     return {
       //要备份的数据库名字
       dbname: "",
-      dbList:[],
+      dbList: [],
       //删除的dialog控制
       centerDialogVisible: false,
       //删除的密码
-      adminPassword: '',
+      adminPassword: "",
       //还原的密码
-      BadminPassword: '',
+      BadminPassword: "",
       //要删除的数据库名字
-      dbDeleteName: '',
+      dbDeleteName: "",
       //还原的dialog控制
-      BcenterDialogVisible: '',
+      BcenterDialogVisible: "",
       //要还原的数据库名字
-      dbSetbackName: '',
+      dbSetbackName: "",
       //全部删除的dialog控制
-      CcenterDialogVisible: '',
+      CcenterDialogVisible: "",
       //清空数据库的密码
-      CadminPassword: ''
+      CadminPassword: "",
     };
   },
-  created(){
+  created() {
     this.getdbList();
   },
   methods: {
@@ -171,12 +223,11 @@ export default {
         console.log("备份成功");
         this.getdbList();
         that.$message.success(data.msg);
-
       }
     },
-    async deletedbSaved(){
-        var that = this;
-        const { data } = await this.$http.delete("/api/database/delete", {
+    async deletedbSaved() {
+      var that = this;
+      const { data } = await this.$http.delete("/api/database/delete", {
         data: {
           token: window.sessionStorage.getItem("token"),
           password: this.adminPassword,
@@ -193,7 +244,7 @@ export default {
       }
       this.getdbList();
     },
-    async getdbList(){
+    async getdbList() {
       const { data } = await this.$http.post("/api/database/get", {
         token: window.sessionStorage.getItem("token"),
       });
@@ -205,14 +256,14 @@ export default {
         this.dbList = data.data.save;
       }
     },
-    async setbackSaved(){
+    async setbackSaved() {
       var that = this;
       console.log(this.BadminPassword);
       console.log(this.dbSetbackName);
-       const { data } = await this.$http.post("/api/database/recover", {
+      const { data } = await this.$http.post("/api/database/recover", {
         token: window.sessionStorage.getItem("token"),
-        password:this.BadminPassword,
-        name:this.dbSetbackName
+        password: this.BadminPassword,
+        name: this.dbSetbackName,
       });
       if (data.code !== 0) {
         console.log(data.msg);
@@ -223,9 +274,9 @@ export default {
         that.$message.success(data.msg);
       }
     },
-    async emptydbSaved(){
+    async emptydbSaved() {
       var that = this;
-        const { data } = await this.$http.delete("/api/database/empty", {
+      const { data } = await this.$http.delete("/api/database/empty", {
         data: {
           token: window.sessionStorage.getItem("token"),
           password: this.CadminPassword,
@@ -241,15 +292,15 @@ export default {
       }
       this.getdbList();
     },
-    Init(){
-      this.adminPassword = '';
+    Init() {
+      this.adminPassword = "";
     },
-    InitB(){
-      this.BadminPassword = '';
+    InitB() {
+      this.BadminPassword = "";
     },
-    InitC(){
-      this.CadminPassword = '';
-    }
+    InitC() {
+      this.CadminPassword = "";
+    },
   },
 };
 </script>

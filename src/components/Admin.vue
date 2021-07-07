@@ -1,53 +1,40 @@
-<template>
-</template>
+<template></template>
 
 <script>
-export default {
-}
+export default {};
 </script>
 
 <style>
-
 </style><template>
   <div id="home">
     <el-container class="home-container">
       <el-header>
         <div>
-        <h1 data-shadow="家庭财务管理">家庭财务管理-管理员</h1>
+          <h1 data-shadow="家庭财务管理">家庭财务管理-管理员</h1>
         </div>
-        <!--顶部菜单-->
-        <el-menu
-          class="el-menu-demo"
-          mode="horizontal"
-          @select="handleSelect"
-          background-color="rgb(5, 107, 110)"
-          text-color="#fff"
-          active-text-color="#ffd04b"
-        >
-          <el-menu-item index="1">处理中心</el-menu-item>
-          <el-submenu index="2">
-            <template slot="title">我的工作台</template>
-            <el-menu-item index="2-1">选项1</el-menu-item>
-            <el-menu-item index="2-2">选项2</el-menu-item>
-            <el-menu-item index="2-3">选项3</el-menu-item>
-            <el-submenu index="2-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="2-4-1">选项1</el-menu-item>
-              <el-menu-item index="2-4-2">选项2</el-menu-item>
-              <el-menu-item index="2-4-3">选项3</el-menu-item>
-            </el-submenu>
-          </el-submenu>
-          <el-menu-item index="3">消息中心</el-menu-item>
-          <el-menu-item index="4"
-            ><a href="https://www.ele.me" target="_blank"
-              >账户管理</a
-            ></el-menu-item
-          >
-        </el-menu>
+
         <div>
-          <el-avatar
-            src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-          ></el-avatar>
+          <el-popover placement="bottom" width="140" trigger="hover">
+            <div style="text-align: center">
+              <el-button style="width: 130px" plain @click="profile">
+                个人资料
+              </el-button>
+              <el-divider></el-divider>
+              <el-button
+                type="danger"
+                plain
+                icon="iconfont icon-dingbudaohang-zhangh"
+                @click="logout"
+                style="width: 130px"
+                >退出</el-button
+              >
+            </div>
+            <el-avatar
+              slot="reference"
+              id="avatar"
+              src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+            ></el-avatar>
+          </el-popover>
         </div>
       </el-header>
       <el-container>
@@ -95,6 +82,13 @@ export default {
   methods: {
     toggleCollapse() {
       this.isCollapse = !this.isCollapse;
+    },
+    logout() {
+      window.sessionStorage.clear();
+      this.$router.replace("/login");
+    },
+    profile() {
+      this.$router.push("/profile");
     },
   },
 };
