@@ -43,7 +43,7 @@ const routes = [
       { path: '/1-2', component: FinancialList },
       { path: '/1-3', component: Shares },
       { path: '/2-1', component: SecurityAccount },
-      { path: '/2-2', component: SharesManage },
+      { path: '/SharesManage', component: SharesManage },
       { path: '/3', component: SharesForecast },
       { path: '/ShareRecord', component: ShareRecord }
       // { path: '/changeabletitle', component: ChangeableTitle }

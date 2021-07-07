@@ -85,7 +85,7 @@
             placement="top"
             :enterable="false"
           >
-            <router-link to="/2-2">
+            <router-link to="/SharesManage">
               <el-button
                 type="primary"
                 icon="el-icon-edit"

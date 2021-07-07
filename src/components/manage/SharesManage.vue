@@ -4,8 +4,8 @@
     <el-card shadow="always">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/1-1' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>收支详情</el-breadcrumb-item>
-        <el-breadcrumb-item>收支查询</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/2-1'}">证券账户管理</el-breadcrumb-item>
+        <el-breadcrumb-item>交易记录管理</el-breadcrumb-item>
       </el-breadcrumb>
     </el-card>
     <br />
