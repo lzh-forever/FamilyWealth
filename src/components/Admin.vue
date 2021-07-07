@@ -16,9 +16,6 @@ export default {};
         <div>
           <el-popover placement="bottom" width="140" trigger="hover">
             <div style="text-align: center">
-              <el-button style="width: 130px" plain @click="profile">
-                个人资料
-              </el-button>
               <el-divider></el-divider>
               <el-button
                 type="danger"

@@ -69,6 +69,15 @@
               @click="addDialogVisible = true"
             ></el-button
           ></el-col>
+          <el-col :span="2">
+            <el-tag size="large">收入总和：{{ receiptSum }}</el-tag>
+          </el-col>
+          <el-col :span="2"
+            ><el-tag size="large">支出总和：{{ disbursementSum }}</el-tag></el-col
+          >
+          <el-col :span="2"
+            ><el-tag size="large">预消费金额：{{ advanceConsumption }}</el-tag></el-col
+          >
         </el-row>
       </div>
       <el-table
@@ -185,6 +194,9 @@ export default {
       // 控制添加对话框的显示和隐藏
       addDialogVisible: false,
       editDialogVisible: false,
+      advanceConsumption: 0,
+      receiptSum: 0,
+      disbursementSum: 0,
       input: "",
       select: "",
       queryInfo: {
@@ -403,6 +415,20 @@ export default {
       this.getAll();
     },
 
+    async getInfo() {
+      const { data } = await this.$http.post("/api/user/info", {
+        token: this.token,
+      });
+      if (data.code == 0) {
+        this.$message.success(data.msg);
+        this.receiptSum = data.data.receiptSum;
+        this.disbursementSum = data.data.disbursementSum;
+        this.advanceConsumption = data.data.advanceConsumption;
+      } else {
+        this.$message.error(data.msg);
+      }
+    },
+
     async getAll() {
       const { data: response } = await this.$http.post("/api/bill/get_all", {
         token: this.token,
@@ -417,6 +443,7 @@ export default {
         this.$message.error("ERROR");
       }
       this.initChart();
+      this.getInfo();
     },
 
     // 删除弹窗
