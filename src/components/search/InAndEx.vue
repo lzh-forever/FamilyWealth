@@ -71,7 +71,13 @@
           ></el-col>
         </el-row>
       </div>
-      <el-table :data="tableData" height="350" border style="width: 100%" stripe>
+      <el-table
+        :data="tableData"
+        height="350"
+        border
+        style="width: 100%"
+        stripe
+      >
         <el-table-column type="index" label="#"></el-table-column>
         <el-table-column prop="time" label="日期" width="250" sortable>
         </el-table-column>
@@ -239,7 +245,11 @@ export default {
         title: {
           text: "支出",
         },
-        tooltip: {},
+        tooltip: {
+          formatter: function (datas) {
+            return datas.value.toFixed(2);
+          },
+        },
         legend: {
           data: ["支出"],
         },
@@ -256,6 +266,11 @@ export default {
         ],
       },
       option2: {
+        tooltip: {
+          formatter: function (datas) {
+            return datas.value.toFixed(2);
+          },
+        },
         title: {
           text: "收入",
         },
@@ -294,7 +309,12 @@ export default {
         num: [
           { required: true, message: "请输入内容", trigger: "blur" },
           { min: 0, max: 10, message: "0到10位", trigger: "blur" },
-          { pattern: /^[1-9]\d*$/, required: true, message: "请输入正整数", trigger: "blur" }
+          {
+            pattern: /^[1-9]\d*$/,
+            required: true,
+            message: "请输入正整数",
+            trigger: "blur",
+          },
         ],
         type: [{ required: true }],
       },
@@ -522,13 +542,14 @@ export default {
   },
 
   watch: {
-     queryInfo:{//深度监听，可监听到对象、数组的变化
-         handler(val, oldVal){
-           this.getAll();
-         },
-         deep:true //true 深度监听
-     }
-  }
+    queryInfo: {
+      //深度监听，可监听到对象、数组的变化
+      handler(val, oldVal) {
+        this.getAll();
+      },
+      deep: true, //true 深度监听
+    },
+  },
 };
 </script>
 
